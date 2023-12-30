@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "keep.database.type",
+      "type": "java.lang.String",
+      "description": "Database to be used, possible options: mongo."
+    },
+    {
+      "name": "keep.database.url",
+      "type": "java.lang.String",
+      "description": "Database url."
+    },
+    {
+      "name": "keep.database.name",
+      "type": "java.lang.String",
+      "description": "Database name."
+    }
+  ]
+}

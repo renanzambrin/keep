@@ -1,0 +1,5 @@
+keep:
+  database:
+    type: none
+    url: localhost
+    name: keep
