@@ -5,7 +5,9 @@ import lombok.Builder;
 import org.springframework.data.annotation.Id;
 
 @Builder
-public record Category(
+public record Bookmark(
         @Id UUID id,
-        String name
+        String name,
+        String url,
+        String description
 ) {}

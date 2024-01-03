@@ -1,4 +1,4 @@
-package renanzambrin.keep.bookmarks.infrastructure.repository;
+package renanzambrin.keep.bookmarks.infrastructure.repository.mongodb;
 
 import java.util.UUID;
 import com.mongodb.client.result.DeleteResult;
@@ -24,8 +24,9 @@ public class MongoDbCategoryRepository implements CategoryRepository {
     }
 
     @Override
-    public Mono<Category> findById(UUID id) {
-        return template.findById(id, Category.class);
+    public Mono<Boolean> remove(Category category) {
+        return template.remove(category)
+                .map(DeleteResult::wasAcknowledged);
     }
 
     @Override
@@ -34,9 +35,8 @@ public class MongoDbCategoryRepository implements CategoryRepository {
     }
 
     @Override
-    public Mono<Boolean> remove(Category category) {
-        return template.remove(category)
-                .map(DeleteResult::wasAcknowledged);
+    public Mono<Category> findById(UUID id) {
+        return template.findById(id, Category.class);
     }
 
 }

@@ -1,4 +1,4 @@
-package renanzambrin.keep.bookmarks.infrastructure.repository;
+package renanzambrin.keep.bookmarks.infrastructure.repository.mongodb;
 
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +26,7 @@ class MongoDbCategoryRepositoryIT extends AbstractMongoDbIntegrationTest {
     @Test
     void givenExistingCategory_WhenFindById_ThenReturnOne(Category category) {
         repository.persist(category).block();
-        Category result = repository.findById(category.id()).block();
+        final Category result = repository.findById(category.id()).block();
         Assertions.assertNotNull(result);
         Assertions.assertEquals(category.id(), result.id());
         Assertions.assertEquals(category.name(), result.name());
@@ -37,7 +37,7 @@ class MongoDbCategoryRepositoryIT extends AbstractMongoDbIntegrationTest {
         Assertions.assertNotEquals(categoryOne.id().toString(), categoryTwo.id().toString());
         repository.persist(categoryOne).block();
         repository.persist(categoryTwo).block();
-        List<Category> resultList = repository.findAll().collectList().block();
+        final List<Category> resultList = repository.findAll().collectList().block();
         Assertions.assertNotNull(resultList);
         Assertions.assertFalse(resultList.isEmpty());
         Assertions.assertTrue(resultList.containsAll(List.of(categoryOne, categoryTwo)));
@@ -47,6 +47,8 @@ class MongoDbCategoryRepositoryIT extends AbstractMongoDbIntegrationTest {
     void givenExistingCategory_WhenRemove_ThenReturnTrue(Category category) {
         repository.persist(category).block();
         Assertions.assertTrue(repository.remove(category).block());
+        final Category result = repository.findById(category.id()).block();
+        Assertions.assertNull(result);
     }
 
 }

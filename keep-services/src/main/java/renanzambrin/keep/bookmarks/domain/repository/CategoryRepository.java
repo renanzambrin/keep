@@ -9,10 +9,10 @@ public interface CategoryRepository {
 
     Mono<Category> persist(Category category);
 
-    Mono<Category> findById(UUID id);
+    Mono<Boolean> remove(Category category);
 
     Flux<Category> findAll();
 
-    Mono<Boolean> remove(Category category);
+    Mono<Category> findById(UUID id);
 
 }

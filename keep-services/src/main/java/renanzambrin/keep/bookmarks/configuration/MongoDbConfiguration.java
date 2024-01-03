@@ -30,6 +30,11 @@ public class MongoDbConfiguration {
                 .build();
     }
 
+    private String getConnectionString() {
+        String connectionString = databaseUrl.startsWith(MONGODB_PREFIX) ? databaseUrl : MONGODB_PREFIX + databaseUrl;
+        return connectionString.endsWith(databaseName) ? connectionString : connectionString + "/" + databaseName;
+    }
+
     @Bean
     public MongoClient mongoClient(MongoClientSettings mongoClientSettings) {
         return MongoClients.create(mongoClientSettings);
@@ -38,11 +43,6 @@ public class MongoDbConfiguration {
     @Bean
     public ReactiveMongoTemplate reactiveMongoTemplate(MongoClient mongoClient) {
         return new ReactiveMongoTemplate(mongoClient, databaseName);
-    }
-
-    private String getConnectionString() {
-        String connectionString = databaseUrl.startsWith(MONGODB_PREFIX) ? databaseUrl : MONGODB_PREFIX + databaseUrl;
-        return connectionString.endsWith(databaseName) ? connectionString : connectionString + "/" + databaseName;
     }
 
 }
