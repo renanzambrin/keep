@@ -1,5 +1,6 @@
 package renanzambrin.keep.shared.infrastructure.repository;
 
-public abstract class AbstractDatabaseIntegrationTest extends AbstractIntegrationTest {
+import renanzambrin.keep.shared.infrastructure.AbstractIntegrationTest;
 
+public abstract class AbstractDatabaseIntegrationTest extends AbstractIntegrationTest {
 }

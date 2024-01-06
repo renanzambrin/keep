@@ -1,4 +1,4 @@
-package renanzambrin.keep.shared.infrastructure.repository;
+package renanzambrin.keep.shared.infrastructure;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;

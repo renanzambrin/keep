@@ -1,6 +1,6 @@
 keep:
   database:
-    type: none
+    type: local-file
     url: localhost
     name: keep
 

@@ -7,7 +7,7 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.utility.DockerImageName;
 import renanzambrin.keep.shared.annotation.MongoDB;
 
-public class AbstractMongoDbIntegrationTest extends AbstractDatabaseIntegrationTest {
+public abstract class AbstractMongoDbIntegrationTest extends AbstractDatabaseIntegrationTest {
 
     private static final MongoDBContainer MONGO_DB_CONTAINER =
             new MongoDBContainer(DockerImageName.parse("mongo:latest"))

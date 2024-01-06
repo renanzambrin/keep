@@ -4,7 +4,7 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import renanzambrin.keep.shared.infrastructure.repository.AbstractIntegrationTest;
+import renanzambrin.keep.shared.infrastructure.AbstractIntegrationTest;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.Is.is;

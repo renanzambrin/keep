@@ -4,7 +4,7 @@ import java.util.UUID;
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
 
-@Builder
+@Builder(toBuilder = true)
 public record Category(
         @Id UUID id,
         String name
