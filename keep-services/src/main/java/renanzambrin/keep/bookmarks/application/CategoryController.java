@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -22,7 +24,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public Mono<Category> create(final NewCategoryRequestDTO request) {
+    public Mono<Category> create(@RequestBody CategoryDTO request) {
         return categoryService.create(request.toCategory());
     }
 
@@ -36,15 +38,20 @@ public class CategoryController {
         return categoryService.findById(id);
     }
 
+    @PutMapping("/{id}")
+    public Mono<Category> update(@PathVariable("id") UUID id, @RequestBody CategoryDTO updateDTO) {
+        return categoryService.update(id, updateDTO.toCategory());
+    }
+
     @DeleteMapping("/{id}")
-    public Mono<Boolean> deleteCategory(@PathVariable("id") UUID id) {
+    public Mono<Void> delete(@PathVariable("id") UUID id) {
         return categoryService.delete(id);
     }
 
 }
 
 @Builder
-record NewCategoryRequestDTO(String name) {
+record CategoryDTO(String name) {
 
     public Category toCategory() {
         return Category.builder()

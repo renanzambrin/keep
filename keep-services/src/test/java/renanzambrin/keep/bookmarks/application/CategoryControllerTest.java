@@ -17,9 +17,10 @@ import renanzambrin.keep.bookmarks.domain.resolver.CategoryResolver;
 import renanzambrin.keep.bookmarks.domain.service.CategoryService;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@WebFluxTest
+@WebFluxTest(controllers = CategoryController.class)
 @ExtendWith(CategoryResolver.class)
 class CategoryControllerTest {
 
@@ -33,7 +34,7 @@ class CategoryControllerTest {
     void givenValidRequest_WhenPost_ThenCategoryIsReturned(Category category) {
         when(categoryService.create(any())).thenReturn(Mono.just(category));
 
-        NewCategoryRequestDTO requestDTO = NewCategoryRequestDTO.builder()
+        CategoryDTO requestDTO = CategoryDTO.builder()
                 .name("test-category")
                 .build();
 
@@ -41,7 +42,7 @@ class CategoryControllerTest {
                 .uri("/categories")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .body(Mono.just(requestDTO), NewCategoryRequestDTO.class)
+                .body(Mono.just(requestDTO), CategoryDTO.class)
                 .exchange()
                 .expectBody(Category.class)
                 .isEqualTo(category);
@@ -75,13 +76,32 @@ class CategoryControllerTest {
     @Test
     void givenValidId_WhenDelete_ThenTrueIsReturned() {
         final UUID id = UUID.randomUUID();
-        when(categoryService.delete(id)).thenReturn(Mono.just(true));
+        when(categoryService.delete(id)).thenReturn(Mono.empty());
         webTestClient.delete()
                 .uri("/categories/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .expectBody(Boolean.class)
-                .isEqualTo(true);
+                .expectStatus()
+                .is2xxSuccessful();
+    }
+
+    @Test
+    void givenValidId_WhenUpdate_ThenCategoryIsReturned(Category category) {
+        final UUID id = UUID.randomUUID();
+        when(categoryService.update(eq(id), any())).thenReturn(Mono.just(category));
+
+        CategoryDTO requestDTO = CategoryDTO.builder()
+                .name("test-updated-category")
+                .build();
+
+        webTestClient.put()
+                .uri("/categories/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(requestDTO), CategoryDTO.class)
+                .exchange()
+                .expectBody(Category.class)
+                .isEqualTo(category);
     }
 
 }
