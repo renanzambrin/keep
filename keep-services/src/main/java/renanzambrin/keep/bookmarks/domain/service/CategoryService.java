@@ -3,6 +3,7 @@ package renanzambrin.keep.bookmarks.domain.service;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import renanzambrin.keep.bookmarks.domain.entity.Category;
 import renanzambrin.keep.bookmarks.domain.repository.CategoryRepository;
@@ -18,6 +19,19 @@ public class CategoryService {
                 .id(UUID.randomUUID())
                 .build();
         return categoryRepository.persist(category);
+    }
+
+    public Flux<Category> findAll() {
+        return categoryRepository.findAll();
+    }
+
+    public Mono<Boolean> delete(UUID id) {
+        return findById(id)
+                .flatMap(categoryRepository::remove);
+    }
+
+    public Mono<Category> findById(UUID id) {
+        return categoryRepository.findById(id);
     }
 
 }

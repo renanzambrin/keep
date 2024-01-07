@@ -2,7 +2,6 @@ package renanzambrin.keep.bookmarks.infrastructure.repository.file;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 public abstract class AbstractLocalFileRepository<K, V> {
 
@@ -24,28 +22,18 @@ public abstract class AbstractLocalFileRepository<K, V> {
 
     private Map<K, V> readFromFile() {
         try {
+            if (!Files.exists(getPath())) {
+                Files.createFile(getPath());
+            }
             String json = Files.readString(getPath());
             return objectMapper.readValue(json, new TypeReference<>() {});
-        } catch (MismatchedInputException e) {
-            return new HashMap<>();
-        } catch (NoSuchFileException e) {
-            createFile();
-            return new HashMap<>();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return new HashMap<>();
         }
     }
 
     private Path getPath() {
         return Paths.get(this.getClass().getSimpleName().concat(FILE_EXTENSION));
-    }
-
-    private void createFile() {
-        try {
-            Files.createFile(getPath());
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
     }
 
     protected V add(K key, V value) {
